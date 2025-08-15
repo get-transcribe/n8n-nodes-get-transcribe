@@ -1,104 +1,104 @@
 # n8n-nodes-get-transcribe
 
-Este es un nodo de n8n para integrar con la API de GetTranscribe, que permite transcribir videos de plataformas de redes sociales como Instagram, TikTok, YouTube y más.
+This is an n8n node for integrating with the GetTranscribe API, which allows you to transcribe videos from social media platforms like Instagram, TikTok, YouTube, and more.
 
-## Funcionalidades
+## Features
 
-### Transcripciones
-- **Crear**: Crear una nueva transcripción a partir de una URL de video
-- **Obtener**: Obtener una transcripción específica por ID
-- **Listar**: Listar todas las transcripciones con filtros opcionales
+### Transcriptions
+- **Create**: Create a new transcription from a video URL
+- **Get**: Get a specific transcription by ID
+- **List**: List all transcriptions with optional filters
 
-### Carpetas
-- **Crear**: Crear nuevas carpetas para organizar transcripciones
-- **Listar**: Listar todas las carpetas
-- **Actualizar**: Actualizar propiedades de carpetas existentes
+### Folders
+- **Create**: Create new folders to organize transcriptions
+- **List**: List all folders
+- **Update**: Update properties of existing folders
 
-### Usuario
-- **Obtener**: Obtener información del usuario y estadísticas de la cuenta
+### User
+- **Get**: Get user information and account statistics
 
-## Instalación
+## Installation
 
-### Instalación en n8n Cloud
+### Installation on n8n Cloud
 
-1. Ve a **Settings** > **Community Nodes**
-2. Busca `n8n-nodes-get-transcribe`
-3. Haz clic en **Install**
+1. Go to **Settings** > **Community Nodes**
+2. Search for `n8n-nodes-get-transcribe`
+3. Click **Install**
 
-### Instalación en n8n auto-hospedado
+### Installation on self-hosted n8n
 
-1. Ve al directorio raíz de tu instalación de n8n
-2. Ejecuta: `npm install n8n-nodes-get-transcribe`
-3. Reinicia n8n
+1. Go to your n8n installation root directory
+2. Run: `npm install n8n-nodes-get-transcribe`
+3. Restart n8n
 
-## Configuración
+## Configuration
 
-### Credenciales
+### Credentials
 
-Para usar este nodo, necesitas configurar tus credenciales de GetTranscribe:
+To use this node, you need to configure your GetTranscribe credentials:
 
-1. En n8n, ve a **Credentials** y crea nuevas credenciales de tipo **GetTranscribe API**
-2. Ingresa tu **API Key** de GetTranscribe
-   - Puedes encontrar tu API Key en tu cuenta de GetTranscribe en la sección de configuración
-   - La API Key debe tener el formato: `gt_...`
+1. In n8n, go to **Credentials** and create new credentials of type **GetTranscribe API**
+2. Enter your **API Key** from GetTranscribe
+   - You can find your API Key in your GetTranscribe account settings
+   - The API Key should have the format: `gt_...`
 
-### URL de prueba de credenciales
+### Credential test URL
 
-El nodo verificará automáticamente tus credenciales haciendo una petición a `/users/me` en la API de GetTranscribe.
+The node will automatically verify your credentials by making a request to `/users/me` on the GetTranscribe API.
 
-## Uso
+## Usage
 
-### Crear una Transcripción
+### Create a Transcription
 
-1. Agrega el nodo **GetTranscribe** a tu flujo de trabajo
-2. Selecciona **Transcription** como recurso
-3. Selecciona **Create** como operación
-4. Ingresa la URL del video que quieres transcribir
-5. Opcionalmente, selecciona un ID de carpeta para organizar la transcripción
+1. Add the **GetTranscribe** node to your workflow
+2. Select **Transcription** as resource
+3. Select **Create** as operation
+4. Enter the URL of the video you want to transcribe
+5. Optionally, select a folder ID to organize the transcription
 
-Ejemplo de URLs soportadas:
+Supported URL examples:
 - Instagram: `https://www.instagram.com/p/ABC123/`
 - TikTok: `https://www.tiktok.com/@user/video/123456789`
 - YouTube: `https://www.youtube.com/watch?v=ABC123`
 
-### Listar Transcripciones
+### List Transcriptions
 
-1. Selecciona **Transcription** como recurso
-2. Selecciona **List** como operación
-3. Configura los filtros opcionales:
-   - **Límite**: Número máximo de resultados
-   - **Saltar**: Número de resultados a omitir (para paginación)
-   - **ID de Carpeta**: Filtrar por carpeta específica
-   - **Plataforma**: Filtrar por plataforma (Instagram, TikTok, YouTube)
+1. Select **Transcription** as resource
+2. Select **List** as operation
+3. Configure optional filters:
+   - **Limit**: Maximum number of results
+   - **Skip**: Number of results to skip (for pagination)
+   - **Folder ID**: Filter by specific folder
+   - **Platform**: Filter by platform (Instagram, TikTok, YouTube)
 
-### Gestión de Carpetas
+### Folder Management
 
-#### Crear Carpeta
-1. Selecciona **Folder** como recurso
-2. Selecciona **Create** como operación
-3. Ingresa el nombre de la carpeta
-4. Opcionalmente, especifica un ID de carpeta padre para crear subcarpetas
+#### Create Folder
+1. Select **Folder** as resource
+2. Select **Create** as operation
+3. Enter the folder name
+4. Optionally, specify a parent folder ID to create subfolders
 
-#### Listar Carpetas
-1. Selecciona **Folder** como recurso
-2. Selecciona **List** como operación
-3. Configura el límite de resultados
+#### List Folders
+1. Select **Folder** as resource
+2. Select **List** as operation
+3. Configure the result limit
 
-### Información del Usuario
+### User Information
 
-1. Selecciona **User** como recurso
-2. Selecciona **Get** como operación
-3. Ingresa tu ID de usuario (puedes usar tu propio ID)
+1. Select **User** as resource
+2. Select **Get** as operation
+3. Enter your user ID (you can use your own ID)
 
-## Respuesta de la API
+## API Response
 
-### Transcripción
+### Transcription
 
 ```json
 {
   "id": 4032,
   "user_id": 2,
-  "transcription": "Texto transcrito del video...",
+  "transcription": "Transcribed text from the video...",
   "platform": "instagram",
   "url": "https://www.instagram.com/p/DM1P8q1MzaG/",
   "thumbnail_url": "https://...",
@@ -110,7 +110,7 @@ Ejemplo de URLs soportadas:
   "char_count": 515,
   "folder_id": null,
   "transcription_analysis": null,
-  "original_transcription": "Texto original...",
+  "original_transcription": "Original text...",
   "transcription_segments": [...],
   "transcription_words": [...],
   "created_at": "2025-08-07T17:43:15.822Z",
@@ -118,47 +118,47 @@ Ejemplo de URLs soportadas:
 }
 ```
 
-## Ejemplos de Flujos de Trabajo
+## Workflow Examples
 
-### Transcripción Automática desde Webhook
+### Automatic Transcription from Webhook
 
-1. **Webhook Trigger** - Recibe URLs de videos
-2. **GetTranscribe Node** - Transcribe el video
-3. **Set Node** - Procesa el texto transcrito
-4. **HTTP Request** - Envía la transcripción a otro servicio
+1. **Webhook Trigger** - Receives video URLs
+2. **GetTranscribe Node** - Transcribes the video
+3. **Set Node** - Processes the transcribed text
+4. **HTTP Request** - Sends the transcription to another service
 
-### Procesamiento por Lotes
+### Batch Processing
 
-1. **Schedule Trigger** - Ejecuta periódicamente
-2. **GetTranscribe Node** - Lista transcripciones pendientes
-3. **If Node** - Verifica si hay nuevas transcripciones
-4. **Loop** - Procesa cada transcripción
+1. **Schedule Trigger** - Runs periodically
+2. **GetTranscribe Node** - Lists pending transcriptions
+3. **If Node** - Checks if there are new transcriptions
+4. **Loop** - Processes each transcription
 
-## Soporte
+## Support
 
-- **Documentación**: [https://docs.gettranscribe.ai](https://docs.gettranscribe.ai)
-- **Soporte**: [support@gettranscribe.ai](mailto:support@gettranscribe.ai)
+- **Documentation**: [https://docs.gettranscribe.ai](https://docs.gettranscribe.ai)
+- **Support**: [support@gettranscribe.ai](mailto:support@gettranscribe.ai)
 - **GitHub**: [https://github.com/gettranscribe/n8n-nodes-get-transcribe](https://github.com/gettranscribe/n8n-nodes-get-transcribe)
 
-## Contribuir
+## Contributing
 
-¡Las contribuciones son bienvenidas! Por favor:
+Contributions are welcome! Please:
 
-1. Haz fork del repositorio
-2. Crea una rama para tu feature
-3. Realiza commit de tus cambios
-4. Haz push a la rama
-5. Abre un Pull Request
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Open a Pull Request
 
-## Licencia
+## License
 
 MIT
 
 ## Changelog
 
 ### v0.1.0
-- Lanzamiento inicial
-- Soporte para transcripciones (crear, obtener, listar)
-- Soporte para carpetas (crear, listar, actualizar)
-- Soporte para información de usuario
-- Autenticación por API Key
+- Initial release
+- Support for transcriptions (create, get, list)
+- Support for folders (create, list, update)
+- Support for user information
+- API Key authentication
