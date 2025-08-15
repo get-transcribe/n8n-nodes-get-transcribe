@@ -1,8 +1,8 @@
 import {
-    IAuthenticateGeneric,
-    ICredentialTestRequest,
-    ICredentialType,
-    INodeProperties,
+	IAuthenticateGeneric,
+	ICredentialTestRequest,
+	ICredentialType,
+	INodeProperties,
 } from 'n8n-workflow';
 
 export class GetTranscribeApi implements ICredentialType {
@@ -36,7 +36,7 @@ export class GetTranscribeApi implements ICredentialType {
 	test: ICredentialTestRequest = {
 		request: {
 			baseURL: 'https://api.gettranscribe.ai',
-			url: '/users/me',
+			url: '/users',
 			method: 'GET',
 		},
 	};
