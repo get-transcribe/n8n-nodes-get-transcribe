@@ -1,11 +1,11 @@
 import {
-    IExecuteFunctions,
-    IHttpRequestMethods,
-    INodeExecutionData,
-    INodeType,
-    INodeTypeDescription,
-    IRequestOptions,
-    NodeConnectionType,
+	IExecuteFunctions,
+	IHttpRequestMethods,
+	INodeExecutionData,
+	INodeType,
+	INodeTypeDescription,
+	IRequestOptions,
+	NodeConnectionType,
 } from 'n8n-workflow';
 
 export class GetTranscribe implements INodeType {
@@ -169,6 +169,37 @@ export class GetTranscribe implements INodeType {
 				},
 				default: null,
 				description: 'Optional folder ID to organize the transcription',
+			},
+			{
+				displayName: 'Language',
+				name: 'language',
+				type: 'string',
+				displayOptions: {
+					show: {
+						resource: ['transcription'],
+						operation: ['create'],
+					},
+				},
+				default: '',
+				placeholder: 'en, es, fr',
+				description: 'ISO-639-1 language code to improve transcription accuracy (optional)',
+			},
+			{
+				displayName: 'Prompt',
+				name: 'prompt',
+				type: 'string',
+				typeOptions: {
+					rows: 3,
+				},
+				displayOptions: {
+					show: {
+						resource: ['transcription'],
+						operation: ['create'],
+					},
+				},
+				default: '',
+				placeholder: 'Context, names, technical terms...',
+				description: 'Context text to guide transcription accuracy (optional)',
 			},
 
 			// Get Transcription Fields
@@ -386,10 +417,18 @@ export class GetTranscribe implements INodeType {
 					if (operation === 'create') {
 						const url = this.getNodeParameter('url', i) as string;
 						const folderId = this.getNodeParameter('folderId', i) as number | null;
+						const language = this.getNodeParameter('language', i) as string;
+						const prompt = this.getNodeParameter('prompt', i) as string;
 
 						const body: any = { url };
 						if (folderId) {
 							body.folder_id = folderId;
+						}
+						if (language) {
+							body.language = language;
+						}
+						if (prompt) {
+							body.prompt = prompt;
 						}
 
 						const options: IRequestOptions = {
