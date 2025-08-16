@@ -19,6 +19,16 @@
     "name": "GetTranscribe",
     "email": "support@gettranscribe.ai"
   },
+  "contributors": [
+    {
+      "name": "danielevz",
+      "url": "https://github.com/get-transcribe"
+    },
+    {
+      "name": "get-transcribe",
+      "url": "https://github.com/get-transcribe"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/get-transcribe/n8n-nodes-get-transcribe.git"

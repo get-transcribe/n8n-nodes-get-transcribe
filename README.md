@@ -150,6 +150,12 @@ Contributions are welcome! Please:
 4. Push to the branch
 5. Open a Pull Request
 
+## Contributors
+
+Thanks to all the people who have contributed to this project:
+
+- [danielevz](https://github.com/emeagenciadigital) - Contributor
+
 ## License
 
 MIT
