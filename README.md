@@ -136,9 +136,9 @@ Supported URL examples:
 
 ## Support
 
-- **Documentation**: [https://docs.gettranscribe.ai](https://docs.gettranscribe.ai)
-- **Support**: [support@gettranscribe.ai](mailto:support@gettranscribe.ai)
-- **GitHub**: [https://github.com/gettranscribe/n8n-nodes-get-transcribe](https://github.com/gettranscribe/n8n-nodes-get-transcribe)
+- **Documentation**: [https://www.gettranscribe.ai/n8n-transcription-instagram-tiktok-automation](https://www.gettranscribe.ai/n8n-transcription-instagram-tiktok-automation)
+- **Support**: [support@gettranscribe.ai](mailto:daniel@gettranscribe.ai)
+- **GitHub**: [https://github.com/get-transcribe/n8n-nodes-get-transcribe](https://github.com/get-transcribe/n8n-nodes-get-transcribe)
 
 ## Contributing
 
@@ -155,6 +155,9 @@ Contributions are welcome! Please:
 MIT
 
 ## Changelog
+
+### v0.1.1
+- Updated GitHub repository URLs in package.json
 
 ### v0.1.0
 - Initial release
