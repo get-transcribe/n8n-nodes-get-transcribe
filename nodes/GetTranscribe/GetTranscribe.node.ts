@@ -1,10 +1,10 @@
 import {
 	IExecuteFunctions,
 	IHttpRequestMethods,
+	IHttpRequestOptions,
 	INodeExecutionData,
 	INodeType,
 	INodeTypeDescription,
-	IRequestOptions,
 	NodeConnectionType,
 } from 'n8n-workflow';
 
@@ -431,7 +431,7 @@ export class GetTranscribe implements INodeType {
 							body.prompt = prompt;
 						}
 
-						const options: IRequestOptions = {
+						const options: IHttpRequestOptions = {
 							method: 'POST' as IHttpRequestMethods,
 							headers: {
 								'Content-Type': 'application/json',
@@ -449,7 +449,7 @@ export class GetTranscribe implements INodeType {
 					} else if (operation === 'get') {
 						const transcriptionId = this.getNodeParameter('transcriptionId', i) as number;
 
-						const options: IRequestOptions = {
+						const options: IHttpRequestOptions = {
 							method: 'GET' as IHttpRequestMethods,
 							url: `${baseURL}/transcriptions/${transcriptionId}`,
 							json: true,
@@ -480,7 +480,7 @@ export class GetTranscribe implements INodeType {
 							qs.platform = platform;
 						}
 
-						const options: IRequestOptions = {
+						const options: IHttpRequestOptions = {
 							method: 'GET' as IHttpRequestMethods,
 							url: `${baseURL}/transcriptions`,
 							qs,
@@ -503,7 +503,7 @@ export class GetTranscribe implements INodeType {
 							body.parent_id = parentId;
 						}
 
-						const options: IRequestOptions = {
+						const options: IHttpRequestOptions = {
 							method: 'POST' as IHttpRequestMethods,
 							headers: {
 								'Content-Type': 'application/json',
@@ -526,7 +526,7 @@ export class GetTranscribe implements INodeType {
 							$sort: { name: 1 },
 						};
 
-						const options: IRequestOptions = {
+						const options: IHttpRequestOptions = {
 							method: 'GET' as IHttpRequestMethods,
 							url: `${baseURL}/transcriptions-folders`,
 							qs,
@@ -551,7 +551,7 @@ export class GetTranscribe implements INodeType {
 							body.parent_id = parentId;
 						}
 
-						const options: IRequestOptions = {
+						const options: IHttpRequestOptions = {
 							method: 'PATCH' as IHttpRequestMethods,
 							headers: {
 								'Content-Type': 'application/json',
@@ -571,7 +571,7 @@ export class GetTranscribe implements INodeType {
 					if (operation === 'get') {
 						const userId = this.getNodeParameter('userId', i) as number;
 
-						const options: IRequestOptions = {
+						const options: IHttpRequestOptions = {
 							method: 'GET' as IHttpRequestMethods,
 							url: `${baseURL}/users/${userId}`,
 							json: true,
