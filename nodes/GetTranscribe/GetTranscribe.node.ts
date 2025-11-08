@@ -420,7 +420,7 @@ export class GetTranscribe implements INodeType {
 						const language = this.getNodeParameter('language', i) as string;
 						const prompt = this.getNodeParameter('prompt', i) as string;
 
-						const body: any = { url };
+						const body: any = { url, source: 'n8n' };
 						if (folderId) {
 							body.folder_id = folderId;
 						}
