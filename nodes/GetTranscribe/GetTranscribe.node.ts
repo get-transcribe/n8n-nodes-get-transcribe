@@ -441,7 +441,7 @@ export class GetTranscribe implements INodeType {
 							json: true,
 						};
 
-						responseData = await this.helpers.requestWithAuthentication.call(
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
 							this,
 							'getTranscribeApi',
 							options,
@@ -455,7 +455,7 @@ export class GetTranscribe implements INodeType {
 							json: true,
 						};
 
-						responseData = await this.helpers.requestWithAuthentication.call(
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
 							this,
 							'getTranscribeApi',
 							options,
@@ -487,7 +487,7 @@ export class GetTranscribe implements INodeType {
 							json: true,
 						};
 
-						responseData = await this.helpers.requestWithAuthentication.call(
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
 							this,
 							'getTranscribeApi',
 							options,
@@ -513,7 +513,7 @@ export class GetTranscribe implements INodeType {
 							json: true,
 						};
 
-						responseData = await this.helpers.requestWithAuthentication.call(
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
 							this,
 							'getTranscribeApi',
 							options,
@@ -533,7 +533,7 @@ export class GetTranscribe implements INodeType {
 							json: true,
 						};
 
-						responseData = await this.helpers.requestWithAuthentication.call(
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
 							this,
 							'getTranscribeApi',
 							options,
@@ -561,7 +561,7 @@ export class GetTranscribe implements INodeType {
 							json: true,
 						};
 
-						responseData = await this.helpers.requestWithAuthentication.call(
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
 							this,
 							'getTranscribeApi',
 							options,
@@ -577,7 +577,7 @@ export class GetTranscribe implements INodeType {
 							json: true,
 						};
 
-						responseData = await this.helpers.requestWithAuthentication.call(
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
 							this,
 							'getTranscribeApi',
 							options,
