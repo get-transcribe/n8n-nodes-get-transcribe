@@ -253,12 +253,12 @@ export class GetTranscribe implements INodeType {
 				},
 				options: [
 					{
-						name: 'Default (Accurate)',
-						value: '',
-					},
-					{
 						name: 'Accurate',
 						value: 'accurate',
+					},
+					{
+						name: 'Default (Accurate)',
+						value: '',
 					},
 					{
 						name: 'Fast',
@@ -339,20 +339,20 @@ export class GetTranscribe implements INodeType {
 						value: '',
 					},
 					{
-						name: 'Pending',
-						value: 'pending',
-					},
-					{
-						name: 'Processing',
-						value: 'processing',
-					},
-					{
 						name: 'Completed',
 						value: 'completed',
 					},
 					{
 						name: 'Failed',
 						value: 'failed',
+					},
+					{
+						name: 'Pending',
+						value: 'pending',
+					},
+					{
+						name: 'Processing',
+						value: 'processing',
 					},
 				],
 				default: '',
