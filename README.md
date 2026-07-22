@@ -12,9 +12,9 @@ This is an n8n node for integrating with the GetTranscribe API, which allows you
 When a job completes, use the returned `transcription_id` with the Transcription **Get** operation to fetch the full transcript.
 
 ### Transcriptions
-- **Create**: Create a new transcription from a video URL (synchronous)
-- **Get**: Get a specific transcription by ID
+- **Get**: Get a completed transcription by ID (use after a Job finishes)
 - **List**: List all transcriptions with optional filters
+- **Create (Deprecated)**: Synchronous create — still works for existing workflows, but prefer **Job → Create**
 
 ### Folders
 - **Create**: Create new folders to organize transcriptions
@@ -95,15 +95,13 @@ Statuses:
 2. Select **List** as operation
 3. Optionally filter by status (`pending`, `processing`, `completed`, `failed`)
 
-### Create a Transcription (sync)
+### Create a Transcription (deprecated)
 
-1. Add the **GetTranscribe** node to your workflow
-2. Select **Transcription** as resource
-3. Select **Create** as operation
-4. Enter the URL of the video you want to transcribe
-5. Optionally, select a folder ID to organize the transcription
+> Deprecated. Use **Job → Create** instead. This sync path remains for existing workflows but can time out on long videos.
 
-For long videos prefer **Job → Create** so the workflow does not time out.
+1. Select **Transcription** as resource
+2. Select **Create (Deprecated)** as operation
+3. Enter the URL of the video you want to transcribe
 
 ### List Transcriptions
 
@@ -167,16 +165,17 @@ For long videos prefer **Job → Create** so the workflow does not time out.
 ### Automatic Transcription from Webhook
 
 1. **Webhook Trigger** - Receives video URLs
-2. **GetTranscribe Node** - Transcribes the video
-3. **Set Node** - Processes the transcribed text
-4. **HTTP Request** - Sends the transcription to another service
+2. **GetTranscribe** (Job → Create) - Starts the job
+3. **Wait** + **GetTranscribe** (Job → Get) - Poll until completed
+4. **GetTranscribe** (Transcription → Get) - Fetch the transcript
+5. **HTTP Request** - Sends the transcription to another service
 
 ### Batch Processing
 
 1. **Schedule Trigger** - Runs periodically
-2. **GetTranscribe Node** - Lists pending transcriptions
-3. **If Node** - Checks if there are new transcriptions
-4. **Loop** - Processes each transcription
+2. **GetTranscribe** (Job → List or Transcription → List)
+3. **If Node** - Checks for new/completed items
+4. **Loop** - Processes each item
 
 ## Support
 
@@ -205,6 +204,11 @@ Thanks to all the people who have contributed to this project:
 MIT
 
 ## Changelog
+
+### v0.2.1
+- Mark Transcription → Create as **Deprecated** (favor Job → Create)
+- Default Transcription operation is now Get
+- Docs and node copy push the async Job workflow
 
 ### v0.2.0
 - Add **Job** resource: create, get, and list async transcription jobs (`/transcription-jobs`)

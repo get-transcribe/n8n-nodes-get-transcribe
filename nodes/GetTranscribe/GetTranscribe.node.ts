@@ -16,7 +16,8 @@ export class GetTranscribe implements INodeType {
 		group: ['output'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
-		description: 'Interact with GetTranscribe API to transcribe videos from social media platforms',
+		description:
+			'Interact with GetTranscribe API. Prefer Job → Create for new transcriptions (async, no timeouts).',
 		defaults: {
 			name: 'GetTranscribe',
 		},
@@ -36,16 +37,18 @@ export class GetTranscribe implements INodeType {
 				noDataExpression: true,
 				options: [
 					{
+						name: 'Folder',
+						value: 'folder',
+					},
+					{
 						name: 'Job',
 						value: 'job',
+						description: 'Recommended: create and poll async transcription jobs',
 					},
 					{
 						name: 'Transcription',
 						value: 'transcription',
-					},
-					{
-						name: 'Folder',
-						value: 'folder',
+						description: 'Fetch completed transcripts (Create sync is deprecated)',
 					},
 					{
 						name: 'User',
@@ -71,7 +74,7 @@ export class GetTranscribe implements INodeType {
 						name: 'Create',
 						value: 'create',
 						description:
-							'Start an async transcription job from a video URL (returns immediately with status pending)',
+							'Recommended: start an async transcription job from a video URL (returns immediately with status pending)',
 						action: 'Create a transcription job',
 					},
 					{
@@ -104,15 +107,16 @@ export class GetTranscribe implements INodeType {
 				},
 				options: [
 					{
-						name: 'Create',
+						name: 'Create (Deprecated)',
 						value: 'create',
-						description: 'Create a new transcription from a video URL (synchronous)',
+						description:
+							'Deprecated: use Job → Create instead. Synchronous create can time out on long videos.',
 						action: 'Create a transcription',
 					},
 					{
 						name: 'Get',
 						value: 'get',
-						description: 'Get a transcription by ID',
+						description: 'Get a completed transcription by ID (use after a job completes)',
 						action: 'Get a transcription',
 					},
 					{
@@ -122,7 +126,7 @@ export class GetTranscribe implements INodeType {
 						action: 'List transcriptions',
 					},
 				],
-				default: 'create',
+				default: 'get',
 			},
 
 			// Folder Operations
@@ -373,7 +377,8 @@ export class GetTranscribe implements INodeType {
 				},
 				default: '',
 				placeholder: 'https://www.instagram.com/p/DM1P8q1MzaG/',
-				description: 'The URL of the video to transcribe (Instagram, TikTok, YouTube, etc.)',
+				description:
+					'Deprecated path: prefer Job → Create. URL of the video to transcribe (Instagram, TikTok, YouTube, etc.).',
 			},
 			{
 				displayName: 'Folder ID',
@@ -433,7 +438,8 @@ export class GetTranscribe implements INodeType {
 					},
 				},
 				default: 0,
-				description: 'The ID of the transcription to retrieve',
+				description:
+					'The ID of the transcription to retrieve (usually transcription_id from a completed Job)',
 			},
 
 			// List Transcriptions Fields
