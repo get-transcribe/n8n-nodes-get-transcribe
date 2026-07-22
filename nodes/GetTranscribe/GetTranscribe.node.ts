@@ -36,6 +36,10 @@ export class GetTranscribe implements INodeType {
 				noDataExpression: true,
 				options: [
 					{
+						name: 'Job',
+						value: 'job',
+					},
+					{
 						name: 'Transcription',
 						value: 'transcription',
 					},
@@ -48,7 +52,43 @@ export class GetTranscribe implements INodeType {
 						value: 'user',
 					},
 				],
-				default: 'transcription',
+				default: 'job',
+			},
+
+			// Job Operations
+			{
+				displayName: 'Operation',
+				name: 'operation',
+				type: 'options',
+				noDataExpression: true,
+				displayOptions: {
+					show: {
+						resource: ['job'],
+					},
+				},
+				options: [
+					{
+						name: 'Create',
+						value: 'create',
+						description:
+							'Start an async transcription job from a video URL (returns immediately with status pending)',
+						action: 'Create a transcription job',
+					},
+					{
+						name: 'Get',
+						value: 'get',
+						description:
+							'Get a transcription job by ID (poll until status is completed or failed)',
+						action: 'Get a transcription job',
+					},
+					{
+						name: 'List',
+						value: 'list',
+						description: 'List transcription jobs',
+						action: 'List transcription jobs',
+					},
+				],
+				default: 'create',
 			},
 
 			// Transcription Operations
@@ -66,7 +106,7 @@ export class GetTranscribe implements INodeType {
 					{
 						name: 'Create',
 						value: 'create',
-						description: 'Create a new transcription from a video URL',
+						description: 'Create a new transcription from a video URL (synchronous)',
 						action: 'Create a transcription',
 					},
 					{
@@ -139,6 +179,184 @@ export class GetTranscribe implements INodeType {
 					},
 				],
 				default: 'get',
+			},
+
+			// Create Job Fields
+			{
+				displayName: 'Video URL',
+				name: 'url',
+				type: 'string',
+				required: true,
+				displayOptions: {
+					show: {
+						resource: ['job'],
+						operation: ['create'],
+					},
+				},
+				default: '',
+				placeholder: 'https://www.instagram.com/p/DM1P8q1MzaG/',
+				description: 'The URL of the video to transcribe (Instagram, TikTok, YouTube, etc.)',
+			},
+			{
+				displayName: 'Folder ID',
+				name: 'folderId',
+				type: 'number',
+				displayOptions: {
+					show: {
+						resource: ['job'],
+						operation: ['create'],
+					},
+				},
+				default: null,
+				description: 'Optional folder ID to organize the transcription',
+			},
+			{
+				displayName: 'Language',
+				name: 'language',
+				type: 'string',
+				displayOptions: {
+					show: {
+						resource: ['job'],
+						operation: ['create'],
+					},
+				},
+				default: '',
+				placeholder: 'en, es, fr',
+				description: 'ISO-639-1 language code to improve transcription accuracy (optional)',
+			},
+			{
+				displayName: 'Prompt',
+				name: 'prompt',
+				type: 'string',
+				typeOptions: {
+					rows: 3,
+				},
+				displayOptions: {
+					show: {
+						resource: ['job'],
+						operation: ['create'],
+					},
+				},
+				default: '',
+				placeholder: 'Context, names, technical terms...',
+				description: 'Context text to guide transcription accuracy (optional)',
+			},
+			{
+				displayName: 'Model',
+				name: 'model',
+				type: 'options',
+				displayOptions: {
+					show: {
+						resource: ['job'],
+						operation: ['create'],
+					},
+				},
+				options: [
+					{
+						name: 'Default (Accurate)',
+						value: '',
+					},
+					{
+						name: 'Accurate',
+						value: 'accurate',
+					},
+					{
+						name: 'Fast',
+						value: 'fast',
+					},
+					{
+						name: 'Quality',
+						value: 'quality',
+					},
+					{
+						name: 'Speakers',
+						value: 'speakers',
+					},
+				],
+				default: '',
+				description: 'Transcription model alias (optional)',
+			},
+
+			// Get Job Fields
+			{
+				displayName: 'Job ID',
+				name: 'jobId',
+				type: 'number',
+				required: true,
+				displayOptions: {
+					show: {
+						resource: ['job'],
+						operation: ['get'],
+					},
+				},
+				default: 0,
+				description: 'The ID of the transcription job to retrieve',
+			},
+
+			// List Jobs Fields
+			{
+				displayName: 'Limit',
+				name: 'limit',
+				type: 'number',
+				typeOptions: {
+					minValue: 1,
+				},
+				displayOptions: {
+					show: {
+						resource: ['job'],
+						operation: ['list'],
+					},
+				},
+				default: 50,
+				description: 'Max number of results to return',
+			},
+			{
+				displayName: 'Skip',
+				name: 'skip',
+				type: 'number',
+				displayOptions: {
+					show: {
+						resource: ['job'],
+						operation: ['list'],
+					},
+				},
+				default: 0,
+				description: 'Number of jobs to skip',
+			},
+			{
+				displayName: 'Status',
+				name: 'status',
+				type: 'options',
+				displayOptions: {
+					show: {
+						resource: ['job'],
+						operation: ['list'],
+					},
+				},
+				options: [
+					{
+						name: 'All',
+						value: '',
+					},
+					{
+						name: 'Pending',
+						value: 'pending',
+					},
+					{
+						name: 'Processing',
+						value: 'processing',
+					},
+					{
+						name: 'Completed',
+						value: 'completed',
+					},
+					{
+						name: 'Failed',
+						value: 'failed',
+					},
+				],
+				default: '',
+				description: 'Filter jobs by status',
 			},
 
 			// Create Transcription Fields
@@ -413,7 +631,86 @@ export class GetTranscribe implements INodeType {
 
 				let responseData: any;
 
-				if (resource === 'transcription') {
+				if (resource === 'job') {
+					if (operation === 'create') {
+						const url = this.getNodeParameter('url', i) as string;
+						const folderId = this.getNodeParameter('folderId', i) as number | null;
+						const language = this.getNodeParameter('language', i) as string;
+						const prompt = this.getNodeParameter('prompt', i) as string;
+						const model = this.getNodeParameter('model', i) as string;
+
+						const body: any = { url, source: 'n8n' };
+						if (folderId) {
+							body.folder_id = folderId;
+						}
+						if (language) {
+							body.language = language;
+						}
+						if (prompt) {
+							body.prompt = prompt;
+						}
+						if (model) {
+							body.model = model;
+						}
+
+						const options: IHttpRequestOptions = {
+							method: 'POST' as IHttpRequestMethods,
+							headers: {
+								'Content-Type': 'application/json',
+							},
+							body,
+							url: `${baseURL}/transcription-jobs`,
+							json: true,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'getTranscribeApi',
+							options,
+						);
+					} else if (operation === 'get') {
+						const jobId = this.getNodeParameter('jobId', i) as number;
+
+						const options: IHttpRequestOptions = {
+							method: 'GET' as IHttpRequestMethods,
+							url: `${baseURL}/transcription-jobs/${jobId}`,
+							json: true,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'getTranscribeApi',
+							options,
+						);
+					} else if (operation === 'list') {
+						const limit = this.getNodeParameter('limit', i) as number;
+						const skip = this.getNodeParameter('skip', i) as number;
+						const status = this.getNodeParameter('status', i) as string;
+
+						const qs: any = {
+							$limit: limit,
+							$skip: skip,
+							$sort: { created_at: -1 },
+						};
+
+						if (status) {
+							qs.status = status;
+						}
+
+						const options: IHttpRequestOptions = {
+							method: 'GET' as IHttpRequestMethods,
+							url: `${baseURL}/transcription-jobs`,
+							qs,
+							json: true,
+						};
+
+						responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'getTranscribeApi',
+							options,
+						);
+					}
+				} else if (resource === 'transcription') {
 					if (operation === 'create') {
 						const url = this.getNodeParameter('url', i) as string;
 						const folderId = this.getNodeParameter('folderId', i) as number | null;

@@ -4,8 +4,15 @@ This is an n8n node for integrating with the GetTranscribe API, which allows you
 
 ## Features
 
+### Jobs (recommended)
+- **Create**: Start an async transcription job from a video URL (returns immediately with `pending` status)
+- **Get**: Poll a job by ID until `completed` or `failed`
+- **List**: List jobs with optional status filter
+
+When a job completes, use the returned `transcription_id` with the Transcription **Get** operation to fetch the full transcript.
+
 ### Transcriptions
-- **Create**: Create a new transcription from a video URL
+- **Create**: Create a new transcription from a video URL (synchronous)
 - **Get**: Get a specific transcription by ID
 - **List**: List all transcriptions with optional filters
 
@@ -48,7 +55,47 @@ The node will automatically verify your credentials by making a request to `/use
 
 ## Usage
 
-### Create a Transcription
+### Create a Transcription Job (recommended)
+
+1. Add the **GetTranscribe** node to your workflow
+2. Select **Job** as resource
+3. Select **Create** as operation
+4. Enter the URL of the video you want to transcribe
+5. Optionally set folder ID, language, prompt, or model
+
+The node returns a job with `id` and `status: "pending"`. Poll with **Job → Get** until `status` is `completed` or `failed`. On success, `transcription_id` points to the finished transcript.
+
+Typical n8n pattern:
+
+1. **GetTranscribe** (Job → Create)
+2. **Wait** a few seconds
+3. **GetTranscribe** (Job → Get) using the job `id`
+4. **IF** status is still pending/processing → loop back to Wait
+5. When completed → **GetTranscribe** (Transcription → Get) with `transcription_id`
+
+Supported URL examples:
+- Instagram: `https://www.instagram.com/p/ABC123/`
+- TikTok: `https://www.tiktok.com/@user/video/123456789`
+- YouTube: `https://www.youtube.com/watch?v=ABC123`
+
+### Get a Transcription Job
+
+1. Select **Job** as resource
+2. Select **Get** as operation
+3. Enter the Job ID from the Create response
+
+Statuses:
+- `pending` / `processing`: not ready yet — wait and poll again
+- `completed`: use `transcription_id` to fetch the transcript
+- `failed`: check `error_message`
+
+### List Jobs
+
+1. Select **Job** as resource
+2. Select **List** as operation
+3. Optionally filter by status (`pending`, `processing`, `completed`, `failed`)
+
+### Create a Transcription (sync)
 
 1. Add the **GetTranscribe** node to your workflow
 2. Select **Transcription** as resource
@@ -56,10 +103,7 @@ The node will automatically verify your credentials by making a request to `/use
 4. Enter the URL of the video you want to transcribe
 5. Optionally, select a folder ID to organize the transcription
 
-Supported URL examples:
-- Instagram: `https://www.instagram.com/p/ABC123/`
-- TikTok: `https://www.tiktok.com/@user/video/123456789`
-- YouTube: `https://www.youtube.com/watch?v=ABC123`
+For long videos prefer **Job → Create** so the workflow does not time out.
 
 ### List Transcriptions
 
@@ -161,6 +205,14 @@ Thanks to all the people who have contributed to this project:
 MIT
 
 ## Changelog
+
+### v0.2.0
+- Add **Job** resource: create, get, and list async transcription jobs (`/transcription-jobs`)
+- Job create supports optional model, language, prompt, and folder ID
+- Default resource is now Job (recommended for n8n workflows)
+
+### v0.1.4
+- Bump package version and update request method in GetTranscribe node
 
 ### v0.1.1
 - Updated GitHub repository URLs in package.json

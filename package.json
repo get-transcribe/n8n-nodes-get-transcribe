@@ -1,11 +1,12 @@
 {
   "name": "n8n-nodes-get-transcribe",
-  "version": "0.1.4",
-  "description": "n8n node for GetTranscribe API integration - transcribe videos from Instagram, TikTok, YouTube and more",
+  "version": "0.2.0",
+  "description": "n8n node for GetTranscribe API integration - async transcription jobs and transcripts from Instagram, TikTok, YouTube and more",
   "keywords": [
     "n8n-community-node-package",
     "gettranscribe",
     "transcription",
+    "transcription-jobs",
     "video",
     "instagram",
     "tiktok",
